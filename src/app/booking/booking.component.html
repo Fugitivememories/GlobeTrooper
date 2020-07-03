@@ -1,0 +1,118 @@
+
+<section id="bookingPage" class="bookingSection">
+    <div class="row" *ngIf="destination">
+        
+        <div class="col-md-5 offset-md-1">
+            <h3>{{destination.destinationName}}</h3><br>
+            <div class="card">
+                <button class="btn btn-lg text-left font-weight-bolder" (click)="displayOverView()"
+                    style="background-color: darkgrey">
+                    <span class="badge">{{symO}}</span>
+                    Overview
+                </button>
+                <div *ngIf="isOverview"
+                    style="padding-top: 2.5% ; padding-bottom:2.5%; padding-left: 2% ;padding-right: 2% ; background-color: rgb(236, 232, 232)">
+                    <p>{{destination.details.about}}</p>
+                </div>
+            </div>
+
+            <div class="card text-align-left">
+                <button class="btn btn-lg text-left font-weight-bolder" (click)="displayPackageInclusion()"
+                    style="background-color: darkgrey">
+                    <span class="badge">
+                        <h6>{{symP}}</h6>
+                    </span>
+                    Package Inclusion
+                </button>
+                <div *ngIf="isPackageInclusion" style="padding-top: 2.5% ; background-color: rgb(236, 232, 232)">
+                    <ul *ngFor="let p of packageInclusion">
+                        <li>
+                            <p>{{p}}</p>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <button class="btn btn-lg text-left font-weight-bolder" (click)="displayItinerary()"
+                    style="background-color: darkgrey">
+                    <span class="badge">{{symI}}</span>
+                    Itinerary
+                </button>
+                <div *ngIf="isItinerary"
+                    style="padding-top: 2.5% ;padding-left: 2% ; background-color: rgb(236, 232, 232)">
+                    <div>
+                        <h4>Day Wise Itinerary</h4>
+                    </div>
+                    <h5>Day 1</h5>
+                    <p>{{first}}</p>
+                    <div *ngFor="let p of restDays">
+                        <h5>Day {{restDays.indexOf(p)+2}}</h5>
+                        <p>{{p}}</p>
+                    </div>
+                    <h5>Day {{restDays.length + 2}}</h5>
+                    <p>{{last}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 offset-md-1">
+            <form [formGroup]="bookingForm" class="form">
+                <div class="form-group">
+                    <label>Number of Travellers</label>
+                    <input type="number" formControlName="noOfPeople" id="noOfPeople" class="form-control">
+                    <span class="text-danger"
+                        *ngIf="bookingForm.controls.noOfPeople.invalid && bookingForm.controls.noOfPeople.dirty">
+                        The minimum number of persons is 1 and maximum is 5!!
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label>Trip start Date</label>
+                    <input type="date" formControlName="checkIn" id="checkIn" class="form-control">
+                    <span class="text-danger"
+                        *ngIf="bookingForm.controls.checkIn.invalid && bookingForm.controls.checkIn.dirty">
+                        The check in date should be a future date!!
+                    </span>
+                </div>
+                <div class="form-group custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitches"
+                        formControlName="customSwitches">
+                    <label class="custom-control-label" for="customSwitches"
+                        *ngIf="!bookingForm.controls.customSwitches.value">Include flight charge</label>
+                    <label class="custom-control-label" for="customSwitches"
+                        *ngIf="bookingForm.controls.customSwitches.value">Exclude flight charge</label>
+                </div>
+                <div *ngIf="bookingForm.controls.checkIn.valid">
+                    {{checkOutDate(bookingForm.value.checkIn)}}
+                    <span>Your trip ends on : {{endDate | date:'longDate'}}</span>
+                </div>
+                <div *ngIf="bookingForm.controls.noOfPeople.dirty && bookingForm.controls.customSwitches.value">
+                    <h4 class="text-info">You
+                        Pay:{{(bookingForm.controls.noOfPeople.value*destination.chargePerPerson)+
+                            (destination.flightCharge*bookingForm.controls.noOfPeople.value) | currency:'USD'}}</h4>
+                </div>
+                <div *ngIf="bookingForm.controls.noOfPeople.dirty && !bookingForm.controls.customSwitches.value">
+                    <h4 class="text-info">You
+                        Pay:{{bookingForm.controls.noOfPeople.value*destination.chargePerPerson | currency:'USD'}}</h4>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-info" (click)="book()">CONFIRM BOOKING</button>&nbsp;&nbsp;
+                    <button type="button" class="btn btn-primary" [routerLink]="['/']">GO BACK</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <div class="text-center" *ngIf="successMessage">
+        <br><br>
+        <h3>Booking Confirmed</h3><br>
+        <h4 class="text-success">Congratulations! Trip planned to:{{booking.destination.destinationName}}</h4>
+        Trip starts on:{{bookingForm.controls.checkIn.value | date:'shortDate'}}<br>
+        Trip ends on:{{endDate | date:'shortDate'}}<br>
+
+        <a class="nav-link" [routerLink]="['/view-Bookings']">Click Here To View Planned Trips</a>
+    </div>
+    <div class="text-center" *ngIf="errorMessage">
+        {{errorMessage}}
+    </div>
+</section>

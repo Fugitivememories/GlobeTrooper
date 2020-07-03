@@ -1,0 +1,94 @@
+<!-- home page -->
+<div *ngIf="!packagePage">
+   <!-- Header -->
+   <header class="masthead" id="page-top">
+       <div class="container d-flex h-100 align-items-center">
+           <div class="mx-auto text-center">
+               <h1 class="mx-auto my-0 text-uppercase">Globetrooper</h1>
+               <h2 class="text-white-50 mx-auto mt-2 mb-5">There is always something about this world,
+                   that you haven't seen yet.</h2>
+               <div class="form-inline d-flex">
+                   <input type="text" class="form-control-lg flex-fill bg-black text-white" id="place" name="continent" id="continent" [(ngModel)]="continent" placeholder="Where to?">&nbsp;
+                   <button class="btn btn-info mx-auto" (click)="searchByContinent(continent)">Search</button>
+               </div>
+           </div>
+       </div>
+   </header>
+   
+
+   <!-- About Section -->
+   <section id="about" class="about-section text-center">
+       <div class="container">
+           <div class="row">
+               <div class="col-lg-8 mx-auto">
+                   <h2 class="text-white mb-4">Unleash the traveller inside you</h2>
+                   <p class="about-paragraph text-center">I’m on my way,
+                    Driving at ninety down those country lanes,
+                    Singing to “Tiny Dancer”.
+                    And I miss the way you make me feel, and it’s real,
+                    We watched the sunset over the castle on the hill.</p>
+               </div>
+           </div>
+       </div>
+   </section>
+
+   <app-view-destination></app-view-destination>
+   
+   <!-- Signup Section -->
+   <section id="signup" class="signup-section">
+       <div class="container">
+           <div class="row">
+               <div class="col-md-10 col-lg-8 mx-auto text-center">
+                   <h2 class="text-white mb-5">Subscribe to receive updates!</h2>
+                   <form class="form-inline d-flex" (ngSubmit)="showInfo()">
+                       <input type="email" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" [(ngModel)]="email"  [ngModelOptions]="{standalone: true}" placeholder="Enter email address...">
+                       <button type="submit" class="btn btn-primary mx-auto" (click)="showInfo()">Subscribe</button>
+                   </form>
+               </div>
+               <div *ngIf="successMessage!=null">
+                   <p-toast [style]="{marginTop: '80px'}"position="top-center">
+                   </p-toast>  
+               </div>
+                
+           </div>
+       </div>
+   </section>
+         
+   
+   <!-- Contact Section -->
+   <section class="contact-section bg-black">
+       <div class="container">
+           <div class="row">
+               <div class="col-md-4 mb-3 mb-md-0">
+                   <div class="card py-4 h-100 bg-transparent">
+                       <div class="card-body text-center">
+                           <h4 class="text-uppercase m-0 text-white">Address</h4>
+                           <hr class="my-4">
+                           <div class="small text-white">Pune, Maharashtra</div>
+                       </div>
+                   </div>
+               </div>
+       
+               <div class="col-md-4 mb-3 mb-md-0">
+                   <div class="card py-4 h-100 bg-transparent">
+                       <div class="card-body text-center">
+                           <h4 class="text-uppercase m-0 text-white">Email</h4>
+                           <hr class="my-4">
+                           <div class="small text-white"><a [routerLink]="['/home']">pickachutrooper@something.com</a></div>
+                       </div>
+                   </div>
+               </div>
+       
+               <div class="col-md-4 mb-3 mb-md-0 ">
+                   <div class="card py-4 h-100 bg-transparent">
+                       <div class="card-body text-center ">
+                           <h4 class="text-uppercase m-0 text-white">Phone</h4>
+                           <hr class="my-4">
+                           <div class="small text-white">+91 912345678</div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </section>
+</div>

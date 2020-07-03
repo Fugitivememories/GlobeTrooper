@@ -1,0 +1,113 @@
+<div class="container-fluid">
+    
+<div *ngIf="listOfPackages!=null">
+    <div class="col-md-10 offset-1" style="margin-top: 5%">
+        <div class="card py-0.5 h-1 bg-secondary">
+            <div class="card-body text-center container-fluid">
+                <span class="d-flex justify-content-center">
+                    <form class="range-field w-25">
+                        <h6 style="color: aliceblue">Max Price:{{maxPrice|currency}}</h6>
+                        <input class="custom-range border-0" type="range" min="3000" max="7000" name="price" [(ngModel)]="maxPrice">
+                    </form>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <form class="range-field w-25">
+                            <h6 style="color: aliceblue">Min Days:{{minDays}}</h6>
+                            <input class="custom-range border-0" type="range" min="1" max="22" name="days" [(ngModel)]="minDays">
+                        </form>
+                </span>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngFor="let package of listOfPackages" class="search-details">
+        <div *ngIf="(package.noOfnights>=minDays && package.chargePerPerson <= maxPrice) || (minDays==0 && maxPrice==0)">
+            <div class="row">
+                    <div class="col-md-3">
+                        <img [src]="package.imageUrl" class="package-image float-left img-fluid">
+                    </div>
+                    <div class="col-md-6 vl">
+                        <h4>{{package.destinationName}}</h4>
+                        <span class="badge badge-info">{{package.noOfnights}}<em> Nights</em></span><br>
+                        {{package.details.about}}"
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Price Starting From:</h5>
+                        <span class="text-success">{{package.chargePerPerson | currency:'USD'}}</span>
+                        <br><br>
+                        <span>
+                            <button type="button" (click)="showDetails(package)" class="btn btn-info btn-block"
+                                data-toggle="modal" data-target="#viewDetails">View
+                                details</button><br>
+                            <button type="button" class="btn btn-info btn-block"
+                                [routerLink]='["/book",package.destinationId]'>book</button>
+                        </span>
+                    </div>
+                </div>
+        </div>
+        
+    </div>
+    <!---modal-->
+    <div *ngIf="destinationSelected" id="viewDetails" class="modal fade" role="dialog">
+
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title font-weight-bold" style="font-size:16px">
+                        Package Details
+                    </p>
+                    <button type="button" class="close" data-dismiss="modal">close</button>
+                </div>
+                <div class="modal-body modal-body-height">
+                    <div class="row">
+                        <div class="col-md-5 offset-md-1">
+                            <h4>Tour Highlights</h4>
+                            <ul *ngFor="let h of tourHighlights">
+                                <li><small>{{h}}</small></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4 offset-md-1">
+                            <img class="img-fluid" [src]="destinationSelected.imageUrl">
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 offset-md-1">
+                            <h4>Package Inclusions</h4>
+                            <ul *ngFor="let p of packageInclusion">
+                                <li>
+                                    <small>{{p}}</small>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
+                    <button class="nav-link" [routerLink]="['/book/:destinationSelected.destinationId']" type="button"
+                        class="btn btn-primary btn-sm" data-dismiss="modal">Book</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<div *ngIf="listOfPackages==null" class="notfound">
+    <div class="container" style="max-height: 100%; max-width: 100%">
+        <p class="display-3 text-center" style="margin-top:10%; margin-bottom: 10%">
+            Sorry!!<br>
+            We do not operate in this destination.
+        </p>
+        <p class="text-center">
+            <button class="btn btn-primary" style="text-align: center ; margin-bottom: 13%"
+                [routerLink]="['/home']">Back</button>
+            </p>
+    </div>
+</div>
+</div>

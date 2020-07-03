@@ -1,0 +1,81 @@
+<div class="login-page">
+        <div class="view-destination" *ngIf="listOfAllPackages">
+                <div style="margin-top: 5%; text-align: center; " class="blinking">
+            
+                    <h1>Hot Deals For You!!</h1>
+                </div>
+                
+                <div *ngFor="let package of listOfAllPackages" class="container" class="search-details">
+            
+                    <div class="row">
+                        <div class="col-md-3 offset-1">
+                            <img [src]="package.imageUrl" class="package-image float-left img-fluid">
+                        </div>
+                        <div class="col-md-6 offset-1 vl">
+                            <h4>{{package.destinationName}}</h4>
+                            <span class="badge badge-danger font-weight-bold">{{package.discount}}<em> % Instant Discount</em></span><br>
+                            {{package.details.about}}
+            
+                            <div><br>
+                                <button type="button" class="btn btn-info" (click)="showDetails(package)" data-toggle="modal"
+                                    data-target="#viewDetails">CHECK ITINERARY</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-info" [routerLink]='["/book",package.destinationId]'>book</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="destinationSelected" id="viewDetails" class="modal fade" role="dialog">
+            
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <p class="modal-title font-weight-bold" style="font-size:16px">
+                                    Package Details
+                                </p>
+                                <button type="button" class="close" data-dismiss="modal">close</button>
+                            </div>
+                            <div class="modal-body modal-body-height">
+                                <div class="row">
+                                    <div class="col-md-5 offset-md-1">
+                                        <h4>Tour Highlights</h4>
+                                        <ul *ngFor="let h of tourHighlights">
+                                            <li><small>{{h}}</small></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4 offset-md-1">
+                                        <img class="img-fluid" [src]="destinationSelected.imageUrl">
+                                    </div>
+            
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8 offset-md-1">
+                                        <h4>Package Inclusions</h4>
+                                        <ul *ngFor="let p of packageInclusion">
+                                            <li>
+                                                <small>{{p}}</small>
+                                            </li>
+            
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8 offset-md-1">
+                                        <h4>Tour Pace</h4>
+                                        <div style="margin-left: 5%"><small>{{tourPace}}</small></div>
+                                    </div>
+                                </div>
+            
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
+                                <button class="nav-link" [routerLink]='["/book",destinationSelected.destinationId]' type="button" class="btn btn-primary btn-sm" data-dismiss="modal" >Book</button>
+                            </div>
+            
+                        </div>
+            
+                    </div>
+                </div>
+            </div>
+</div>
+
+
